@@ -19885,7 +19885,7 @@ LIBTOOL='$(SHELL) $(top_builddir)/libtool'
        
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/errors/Makefile src/hash_table/Makefile src/register/Makefile src/servent/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile src/errors/Makefile src/hash_table/Makefile src/network_server/Makefile src/register/Makefile src/servent/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -20519,6 +20519,7 @@ do
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/errors/Makefile") CONFIG_FILES="$CONFIG_FILES src/errors/Makefile" ;;
     "src/hash_table/Makefile") CONFIG_FILES="$CONFIG_FILES src/hash_table/Makefile" ;;
+    "src/network_server/Makefile") CONFIG_FILES="$CONFIG_FILES src/network_server/Makefile" ;;
     "src/register/Makefile") CONFIG_FILES="$CONFIG_FILES src/register/Makefile" ;;
     "src/servent/Makefile") CONFIG_FILES="$CONFIG_FILES src/servent/Makefile" ;;
 

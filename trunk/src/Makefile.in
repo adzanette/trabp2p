@@ -190,7 +190,7 @@ top_srcdir = @top_srcdir@
 
 # set the include path found by configure
 INCLUDES = $(all_includes)
-SUBDIRS = errors hash_table register servent
+SUBDIRS = errors hash_table network_server register servent
 all: all-recursive
 
 .SUFFIXES:

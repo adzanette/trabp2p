@@ -17,3 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#ifndef __NETSERVER_H
+#define __NETSERVER_H
+
+#include <pthread.h>
+#include <errors.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+
+#define SERVER_PORT 5678
+#define MAX_CONNECTIONS 30
+#define F_MESSAGES stdout
+
+/** 
+ * \brief Estrutura que usará a rede diretamente
+ */
+struct network {
+
+  int socket; /**< O socket propriamente dito */
+
+  int (*callback)(int operation, void * data, void * ret_data); /** Callback a ser chamada quando recebe uma operação a realizar */
+
+  struct sockaddr_in server_address;
+
+  pthread_t main_thread; /**< A thread principal da rede */
+
+  int end;
+
+};
+
+#endif

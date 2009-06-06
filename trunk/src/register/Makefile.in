@@ -48,6 +48,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am_registerP2P_OBJECTS = register.$(OBJEXT)
 registerP2P_OBJECTS = $(am_registerP2P_OBJECTS)
 registerP2P_DEPENDENCIES =  \
+	$(top_builddir)/src/network_server/libnet_server.a \
 	$(top_builddir)/src/hash_table/libhash_table.a
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -176,12 +177,14 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 INCLUDES = -I$(top_srcdir)/src/errors -I$(top_srcdir)/src/hash_table \
-	$(all_includes)
+	-I$(top_srcdir)/src/network_server $(all_includes)
 
 METASOURCES = AUTO
 register_include_SOURCES = register.h
 registerP2P_SOURCES = register.c
-registerP2P_LDADD = $(top_builddir)/src/hash_table/libhash_table.a
+registerP2P_LDADD = $(top_builddir)/src/network_server/libnet_server.a \
+	$(top_builddir)/src/hash_table/libhash_table.a -lpthread
+
 all: all-am
 
 .SUFFIXES:
