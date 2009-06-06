@@ -17,32 +17,3 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include "register.h"
-
-void evaluate_commands(char c) {
-
-  return;
-
-};
-
-int main(int argv, char ** argc) {
-
-  struct network * net;
-  char c;
-
-  net = init_network_server();
-
-  while (c != 'q') {
-
-    c = getchar();
-    
-    evaluate_commands(c);
-
-  };
-
-  end_network_server(net);
-  
-  return E_OK;
-
-};
