@@ -43,25 +43,27 @@ pthread_cond_t condition;
 pthread_t thread;
 
 
-int join(char* ip){
+int join(){
 
 	int echolen;
 	char echo[255]; 
 	char buffer[BUFFSIZE];
 	int bytes; 
 
-  echo[0] = (char)1;
+	echo[0] = (char)1;
 	echo[1] = '\0';
-	strcat(echo, ip);
-	echolen = strlen(echo);
-  if (send(sock, echo, echolen, 0) != echolen) {
-  	Die("Mismatch in number of sent bytes");
-  }
+	echolen(echo);
+
+	if (send(sock, echo, echolen, 0) != echolen) {
+		Die("Mismatch in number of sent bytes");
+	}
 
 	printf("Connection ");
-  bytes = 0;
-  bytes = recv(sock, buffer, BUFFSIZE-1, 0))
-  buffer[bytes] = '\0'; 
+
+	bytes = 0;
+	bytes = recv(sock, buffer, BUFFSIZE-1, 0))
+	buffer[bytes] = '\0'; 
+
 	if ((int)buffer[0] == 9){
 		printf("OK!");
 	}else{
@@ -69,23 +71,36 @@ int join(char* ip){
 	}
 }
 
-int publish(char* file, char* ip){
+int publish(char* file){
 	/*SEND FILE + IP*/
 }
 
 int search(char* file){
-	/*SEND SEARCH*/
 
-  /* Receive the word back from the server */
-  fprintf(stdout, "Received: ");
-  while (received < echolen) {
-  	int bytes = 0;
-  	if ((bytes = recv(sock, buffer, BUFFSIZE-1, 0)) < 1) {
-  		Die("Failed to receive bytes from server");
-  	}
-  	received += bytes;
-  	buffer[bytes] = '\0';        /* Assure null terminated string */
-  	fprintf(stdout, buffer);
+	int echolen;
+	char echo[255]; 
+	char buffer[BUFFSIZE];
+	int bytes; 
+
+	echo[0] = (char)1;
+	echo[1] = '\0';
+	strcat(echo, file);
+	echolen(echo);
+
+	if (send(sock, echo, echolen, 0) != echolen) {
+		Die("Mismatch in number of sent bytes");
+	}
+
+	/* Receive the word back from the server */
+	fprintf(stdout, "Received: ");
+	while (received < echolen) {
+		int bytes = 0;
+		if ((bytes = recv(sock, buffer, BUFFSIZE-1, 0)) < 1) {
+			Die("Failed to receive bytes from server");
+		}
+  		received += bytes;
+  		buffer[bytes] = '\0';        /* Assure null terminated string */
+  		fprintf(stdout, buffer);
 	}
 }
 
@@ -113,11 +128,10 @@ int hello(){
 		if(difftime(last, current) > 60){
 			echo[0] = (char)5;
 			echo[1] = '\0';
-			strcat(echo, ip);
 			echolen = strlen(echo);
-  		if (send(sock, echo, echolen, 0) != echolen) {
-  			Die("Mismatch in number of sent bytes");
-  		}
+  			if (send(sock, echo, echolen, 0) != echolen) {
+  				Die("Mismatch in number of sent bytes");
+  			}
 			current = last;
 		}
 	}
@@ -134,28 +148,28 @@ int main(int argv, char ** argc) {
 	char* my_ip;
 	nt sock;
 	struct sockaddr_in echoserver;
-  char buffer[BUFFSIZE];	
+	char buffer[BUFFSIZE];	
 
 	if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
-              Die("Failed to create socket");
-  }
-  
+		Die("Failed to create socket");
+	}
+
 	/* Construct the server sockaddr_in structure */
-  memset(&echoserver, 0, sizeof(echoserver));       /* Clear struct */
+	memset(&echoserver, 0, sizeof(echoserver));       /* Clear struct */
 	echoserver.sin_family = AF_INET;                  /* Internet/IP */
 	echoserver.sin_addr.s_addr = inet_addr(argv[1]);  /* IP address */
 	echoserver.sin_port = htons(PORT);       /* server port */
 	/* Establish connection */
 	if (connect(sock,(struct sockaddr *) &echoserver,sizeof(echoserver)) < 0) {
-  	Die("Failed to connect with server");
-  }       
+		Die("Failed to connect with server");
+	}
 	
 	pthread_mutex_init(&servents_mutex,NULL);
 	pthread_mutex_init(&stable_mutex,NULL);
 
 	pthread_attr_init(&atributes);
-  pthread_attr_setdetachstate(&atributes,PTHREAD_CREATE_JOINABLE);
-  pthread_cond_init(&(condition),NULL);
+	pthread_attr_setdetachstate(&atributes,PTHREAD_CREATE_JOINABLE);
+	pthread_cond_init(&(condition),NULL);
 	pthread_create(thread,&atributes,hello); /* envia hello a cada 60s */	
 
 	do{	
@@ -180,9 +194,3 @@ int main(int argv, char ** argc) {
 	close(sock);
 	return 0;
 }
-
-int main(int argv, char ** argc) {
-
-	return E_OK;
-
-};
