@@ -20,8 +20,27 @@
 
 #include "register.h"
 
+void evaluate_commands(char c) {
+
+  return;
+
+};
+
 int main(int argv, char ** argc) {
 
-	return E_OK;
+  struct network * net;
+  char c;
+
+  net = init_network();
+
+  while (c != 'q') {
+
+    c = getchar();
+    
+    evaluate_commands(c);
+
+  };
+  
+  return E_OK;
 
 };
