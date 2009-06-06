@@ -1,0 +1,62 @@
+\documentclass[a4paper]{book}
+\usepackage{a4wide}
+\usepackage{makeidx}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage{alltt}
+\usepackage{times}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage[pdftex,
+            pagebackref=true,
+            colorlinks=true,
+            linkcolor=blue,
+            unicode
+           ]{hyperref}
+\else
+\usepackage[ps2pdf,
+            pagebackref=true,
+            colorlinks=true,
+            linkcolor=blue,
+            unicode
+           ]{hyperref}
+\usepackage{pspicture}
+\fi
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{doxygen}
+\makeindex
+\setcounter{tocdepth}{3}
+\renewcommand{\footrulewidth}{0.4pt}
+\begin{document}
+\begin{titlepage}
+\vspace*{7cm}
+\begin{center}
+{\Large trabP2P \\[1ex]\large 0.1 }\\
+\vspace*{1cm}
+{\large Gerado por Doxygen 1.5.7}\\
+\vspace*{0.5cm}
+{\small Sun Jun 7 15:12:02 2009}\\
+\end{center}
+\end{titlepage}
+\clearemptydoublepage
+\pagenumbering{roman}
+\tableofcontents
+\clearemptydoublepage
+\pagenumbering{arabic}
+\chapter{Índice dos Arquivos}
+\input{files}
+\chapter{Arquivos}
+\input{config_8h}
+\include{errors_8h}
+\include{hash__table_8c}
+\include{hash__table_8h}
+\include{register_8c}
+\include{register_8h}
+\include{servent_8h}
+\include{serventMain_8c}
+\printindex
+\end{document}

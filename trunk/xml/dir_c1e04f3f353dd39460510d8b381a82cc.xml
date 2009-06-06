@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.5.7">
+  <compounddef id="dir_c1e04f3f353dd39460510d8b381a82cc" kind="dir">
+    <compoundname>/home/lmborba/trabP2P/src/register/</compoundname>
+    <innerfile refid="register_8c">register.c</innerfile>
+    <innerfile refid="register_8h">register.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/lmborba/trabP2P/src/register/"/>
+  </compounddef>
+</doxygen>
