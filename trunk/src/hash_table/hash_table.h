@@ -41,9 +41,9 @@ struct dimensoes {
  * Tipo abstrato das entradas na tabela de Hash.
  */
 typedef struct {
-  char* name;  /**< um string que representa o nome de uma variavel. */
-  clock_t time;    /**< representacao do tempo do último hello. */
-  int ip;    /**< string que representa o ip. */ 
+	char* name;  /**< um string que representa o nome de uma variavel. */
+	clock_t time;    /**< representacao do tempo do último hello. */
+	int ip;    /**< string que representa o ip. */ 
 } entry_t ;
 
 
@@ -51,8 +51,8 @@ typedef struct {
  * Tipo abstrato de uma lista encadeada de entradas na tabela Hash (para tratamento de colisões).
  */
 typedef struct LINKEDLIST {
-  entry_t* head;		/**< referencia a uma entrada na tabela. */
-  struct LINKEDLIST* next;	/**< referencia pro próximo elemento da lista. */
+	entry_t* head;		/**< referencia a uma entrada na tabela. */
+	struct LINKEDLIST* next;	/**< referencia pro próximo elemento da lista. */
 } linkedlist;
 
 
@@ -60,7 +60,7 @@ typedef struct LINKEDLIST {
  * Tipo abstrato de uma tabela hash
  */
 typedef struct SYMBOL_T {
-  linkedlist *ll[PRIME];	/**< referencia a um vetor de listas encadeadas. */
+	linkedlist *ll[PRIME];	/**< referencia a um vetor de listas encadeadas. */
 } symbol_t ;
 
 
