@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define PRIME 211
 #define EOST   0
@@ -40,9 +41,9 @@ struct dimensoes {
  * Tipo abstrato das entradas na tabela de Hash.
  */
 typedef struct {
-   char* name;  /**< um string que representa o nome de uma variavel. */
-   clock_t time;    /**< representacao do tempo do último hello. */
-	 char* ip;    /**< string que representa o ip. */ 
+  char* name;  /**< um string que representa o nome de uma variavel. */
+  clock_t time;    /**< representacao do tempo do último hello. */
+  char* ip;    /**< string que representa o ip. */ 
 } entry_t ;
 
 

@@ -25,10 +25,17 @@
 #include <errors.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 
-#define SERVER_PORT 5678
+#define SERVER_PORT 12021
 #define MAX_CONNECTIONS 30
 #define F_MESSAGES stdout
+
+#define BUF_SIZE 512
+
+#define SIZE_OPERATION 1
+#define SIZE_SEARCH_BOOLEAN 1
+#define SIZE_FILE_NAME_SIZE 4
 
 /** 
  * \brief Estrutura que usará a rede diretamente
@@ -37,7 +44,7 @@ struct network {
 
   int socket; /**< O socket propriamente dito */
 
-  int (*callback)(int operation, void * data, void * ret_data); /** Callback a ser chamada quando recebe uma operação a realizar */
+  int (*callback)(int operation, void * data, void * ret_data,int ip_address); /** Callback a ser chamada quando recebe uma operação a realizar */
 
   struct sockaddr_in server_address;
 
@@ -46,5 +53,7 @@ struct network {
   int end;
 
 };
+
+struct network * init_network_server(int (*callback)(int operation, void * data, void * ret_data, int ip_address));
 
 #endif

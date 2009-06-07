@@ -188,68 +188,6 @@ int insert(symbol_t * table, entry_t * entry) {
 
 };
 
-
-int print_table(symbol_t table) {
-
-  int count = 0;
-  linkedlist * ll_aux;
-  int i,j;
-  struct dimensoes * da;
-
-  for(i=0; i<PRIME; i++) {
-	
-    if ((table.ll)[i] != NULL) {
-    	printf("Celula %d:\n",i);
-    }
-
-    for (ll_aux = (table.ll)[i]; ll_aux != NULL; ll_aux = ll_aux->next) {
-
-      printf("%s,%d,%d,%d,%d,",ll_aux->head->name,ll_aux->head->type,ll_aux->head->size,ll_aux->head->desloc,
-	     ((struct dimensoes *) (ll_aux->head->extra))->n_dim);
-
-      da = (struct dimensoes *) (ll_aux->head->extra);
-
-      for (j=0; j<(da->n_dim);j++) {
-	printf("%d:%d,",da->dim[j][0],da->dim[j][1]);
-      };
-
-      printf("\n");
-      
-      count++;
-
-    };
-
-    if ((table.ll)[i] != NULL) {
-    	printf("\n\n");
-    }
-
-  };
-
-  return count;
-
-}
-
-
-int print_file_table (FILE * out, symbol_t table){
-  
-  int count = 0;
-  linkedlist * ll_aux;
-  int i;
-
-  for(i=0; i<PRIME; i++) {
-
-    for (ll_aux = (table.ll)[i]; ll_aux != NULL; ll_aux = ll_aux->next) {
-
-      fprintf(out,"%s\n",ll_aux->head->name);
-      count++;	
-    }
-  }
-
-  return count;	
-
-}
-
-
 linkedlist* lookup(symbol_t table, char* name) {
 
   int index;
@@ -264,7 +202,7 @@ linkedlist* lookup(symbol_t table, char* name) {
   for (ll_aux = (table.ll)[index]; ll_aux != NULL; ll_aux = ll_aux->next) {
     if (!compare(ll_aux->head->name, name)){
 			if(ret = NULL){      
-				ret = (linked_list *) malloc(sizeof(linkedlist));
+				ret = (linkedlist *) malloc(sizeof(linkedlist));
 				ret->head = ll_aux->head;
 				ret->next = NULL;
 			}else{

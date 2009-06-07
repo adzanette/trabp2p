@@ -48,6 +48,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am_registerP2P_OBJECTS = register.$(OBJEXT)
 registerP2P_OBJECTS = $(am_registerP2P_OBJECTS)
 registerP2P_DEPENDENCIES =  \
+	$(top_builddir)/src/network_server/libnet_server.a \
 	$(top_builddir)/src/hash_table/libhash_table.a
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -66,12 +67,12 @@ DIST_SOURCES = $(registerP2P_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/lmborba/trabP2P/missing --run aclocal-1.10
-AMTAR = ${SHELL} /home/lmborba/trabP2P/missing --run tar
+ACLOCAL = ${SHELL} /home/lmborba/trabp2p/missing --run aclocal-1.10
+AMTAR = ${SHELL} /home/lmborba/trabp2p/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /home/lmborba/trabP2P/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/lmborba/trabP2P/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/lmborba/trabP2P/missing --run automake-1.10
+AUTOCONF = ${SHELL} /home/lmborba/trabp2p/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/lmborba/trabp2p/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/lmborba/trabp2p/missing --run automake-1.10
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -106,7 +107,7 @@ LIBS =
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/lmborba/trabP2P/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/lmborba/trabp2p/missing --run makeinfo
 MKDIR_P = /usr/bin/mkdir -p
 NMEDIT = 
 OBJEXT = o
@@ -123,10 +124,10 @@ SET_MAKE =
 SHELL = /bin/sh
 STRIP = strip
 VERSION = 0.1
-abs_builddir = /home/lmborba/trabP2P/src/register
-abs_srcdir = /home/lmborba/trabP2P/src/register
-abs_top_builddir = /home/lmborba/trabP2P
-abs_top_srcdir = /home/lmborba/trabP2P
+abs_builddir = /home/lmborba/trabp2p/src/register
+abs_srcdir = /home/lmborba/trabp2p/src/register
+abs_top_builddir = /home/lmborba/trabp2p
+abs_top_srcdir = /home/lmborba/trabp2p
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_F77 = g77
@@ -155,7 +156,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = $(SHELL) /home/lmborba/trabP2P/install-sh
+install_sh = $(SHELL) /home/lmborba/trabp2p/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -176,12 +177,14 @@ top_build_prefix = ../../
 top_builddir = ../..
 top_srcdir = ../..
 INCLUDES = -I$(top_srcdir)/src/errors -I$(top_srcdir)/src/hash_table \
-	$(all_includes)
+	-I$(top_srcdir)/src/network_server $(all_includes)
 
 METASOURCES = AUTO
 register_include_SOURCES = register.h
 registerP2P_SOURCES = register.c
-registerP2P_LDADD = $(top_builddir)/src/hash_table/libhash_table.a
+registerP2P_LDADD = $(top_builddir)/src/network_server/libnet_server.a \
+	$(top_builddir)/src/hash_table/libhash_table.a -lpthread
+
 all: all-am
 
 .SUFFIXES:

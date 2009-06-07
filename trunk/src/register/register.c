@@ -19,10 +19,44 @@
  ***************************************************************************/
 
 #include "register.h"
+#include <errors.h>
+#include <netserver.h>
+#include <stdio.h>
 
 void evaluate_commands(char c) {
 
   return;
+
+};
+
+char * get_string(char * data) {
+
+  int size;
+
+  size = *((int *) data_c);
+  data[sizeof(int)+size] = 0;
+
+  return data+sizeof(int);
+
+};
+
+int handle_operations (int operation, void * data, void * ret_data, int ip_address) {
+
+  switch (operation) {
+
+  case 1: {
+    return join(ip_address,ret_data);
+  };
+  case 2: {
+    return publish(get_string((char *) data),ret_data);
+  };
+  case 3: {
+    return search(get_string((char *) data),ret_data);
+  };
+ 
+  };
+
+  return E_OK;
 
 };
 
@@ -31,7 +65,11 @@ int main(int argv, char ** argc) {
   struct network * net;
   char c;
 
-  net = init_network_server();
+  net = init_network_server(handle_operations);
+  if (net == NULL) {
+    printf("Erro Criando o Socket\n");
+    return -1;
+  };
 
   while (c != 'q') {
 
@@ -41,7 +79,9 @@ int main(int argv, char ** argc) {
 
   };
 
-  end_network_server(net);
+  close(net->socket);
+
+  //  end_network_server(net);
   
   return E_OK;
 

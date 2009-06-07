@@ -19,3 +19,14 @@
  ***************************************************************************/
 
 #define E_OK 0 /**< CÃ³digo de indicaÃ§Ã£o de sucesso em operaÃ§Ã£o */
+
+/* Operações definidas */
+#define E_UNKNOWN_MESSAGE 1
+
+/* Erros de socket */
+#define E_ERROR_ACCEPTING_CONNECTION 2
+#define E_ERROR_CREATING_SOCKET 3
+#define E_ERROR_BINDING_SOCKET 4
+#define E_ERROR_LISTENING_SOCKET 5
+
+

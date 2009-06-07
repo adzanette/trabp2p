@@ -19,6 +19,9 @@
  ***************************************************************************/
 
 #include "netserver.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 struct all_data {
 
@@ -30,11 +33,69 @@ struct all_data {
   
 };
 
-int handler(void * data) {
+void * handler(void * data) {
 
-  struct all_data * net_data;
+  struct all_data * a_data;
+  char buffer[BUF_SIZE];
+  char buffer_out[BUF_SIZE];
+  int size;
+  int operation;
+  int string_size;
+  int ret_size;
 
-  net_data = (struct all_data *) data;
+  a_data = (struct all_data *) data;
+
+  size = read(a_data->socket,buffer,SIZE_OPERATION);
+
+  while (size >= 0) {
+
+    operation = buffer[0];
+
+    switch (operation) {
+
+    case 2: case 3: {
+
+      size = 0;
+      while (size < SIZE_FILE_NAME_SIZE) {
+	size += read(a_data->socket,buffer+size,SIZE_FILE_NAME_SIZE-size);
+      };
+
+      string_size = *((int *) buffer);
+
+      size = 0;
+      while (size < string_size) {
+	size += read(a_data->socket,buffer+SIZE_FILE_NAME_SIZE+size,string_size-size);
+      };
+
+      break;
+
+    };
+
+    case 1: case 5: {
+      break;
+    };
+
+    default: {
+      return (void *) E_UNKNOWN_MESSAGE;
+    };
+      
+    };
+
+    ret_size = (*(a_data->net_data->callback))(operation,buffer,buffer_out,a_data->ip_address);
+
+    if (ret_size < 0) {
+      return (void *) -ret_size;
+    } else if (ret_size > 0) {
+      write(a_data->socket,buffer,ret_size);
+    };
+
+    size = read(a_data->socket,buffer,SIZE_OPERATION);
+
+  };
+
+  close(a_data->socket);
+
+  return E_OK;
 
 };
 
@@ -46,7 +107,7 @@ int handler(void * data) {
  * \retval E_OK Sucesso
  * \retval Outro Erro
  */
-int main_function(void * data) {
+void * main_function(void * data) {
 
   struct network * net_data;
 
@@ -56,28 +117,32 @@ int main_function(void * data) {
 
   pthread_t new;  
   
-  struct all_data * new;
+  struct all_data * a_data;
+  
+  int address_size;
 
   net_data = (struct network *) data;
 
-  while (!(net_data->end)) {
+  address_size = sizeof(client_address);
 
-    client_socket = accept(serversock, (struct sockaddr *) &client_address,sizeof(client_address));
+  while (!(net_data->end)) {
+    
+    client_socket = accept(net_data->socket, (struct sockaddr *) &client_address,&address_size);
     if (client_socket < 0) {
-      exit(E_ERROR_ACCEPTING_CONNECTION)
+      exit(E_ERROR_ACCEPTING_CONNECTION);
     };
 
-#ifdef DEBUG
-    fprintf(F_MESSAGES, "Cliente conectado no IP: %s\n",inet_ntoa(echoclient.sin_addr));
-#endif
+    //#ifdef DEBUG
+    fprintf(F_MESSAGES, "Cliente conectado no IP: %s\n",inet_ntoa(client_address.sin_addr));
+    //#endif
 
-    new = (struct all_data *) malloc(sizeof(struct all_data));
+    a_data = (struct all_data *) malloc(sizeof(struct all_data));
 
-    new->socket = client_socket;
-    new->ip_address = echoclient.sin_addr;
-    new->net_data = net_data;
+    a_data->socket = client_socket;
+    a_data->ip_address = client_address.sin_addr.s_addr;
+    a_data->net_data = net_data;
 
-    pthread_create(&new,NULL,handler,(void *) new);
+    pthread_create(&new,NULL,handler,(void *) a_data);
     
   }
 
@@ -88,6 +153,7 @@ int main_function(void * data) {
 int create_socket(struct network * net_data) {
 
   int err;
+  struct sockaddr_in server_address;
 
   net_data->socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
@@ -105,7 +171,7 @@ int create_socket(struct network * net_data) {
     return E_ERROR_BINDING_SOCKET;
   };
 
-  err = listen(serversock, MAX_CONNECTIONS);
+  err = listen(net_data->socket, MAX_CONNECTIONS);
   if (err < 0) {
     return E_ERROR_LISTENING_SOCKET;
   };  
@@ -121,18 +187,19 @@ int create_socket(struct network * net_data) {
  * \return Estrutura com os dados da rede.
  * \retval NULL Erro
  */
-struct network * init_network_server(int (*callback)(int operation, void * data, void * ret_data)) {
+struct network * init_network_server(int (*callback)(int operation, void * data, void * ret_data, int ip_address)) {
 
   struct network * retorno;
   int creation;
  
-  retorno = (struct network *) malloc(struct network);
+  retorno = (struct network *) malloc(sizeof(struct network));
 
   if (!retorno) {
     return NULL;
   };
 
   retorno->callback = callback;
+  retorno->end = 0;
 
   creation = create_socket(retorno);
   if (creation) {
@@ -140,7 +207,7 @@ struct network * init_network_server(int (*callback)(int operation, void * data,
     return NULL;
   };
 
-  creation = pthread_create(&main_thread,NULL,main_function,(void *) retorno);
+  creation = pthread_create(&(retorno->main_thread),NULL,main_function,(void *) retorno);
   if (creation) {
     free(retorno);
     return NULL;

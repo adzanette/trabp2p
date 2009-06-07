@@ -322,7 +322,7 @@ on `(hostname || uname -n) 2>/dev/null | sed 1q`
 "
 
 # Files that config.status was made for.
-config_files=" Makefile src/Makefile src/errors/Makefile src/hash_table/Makefile src/register/Makefile src/servent/Makefile"
+config_files=" Makefile src/Makefile src/errors/Makefile src/hash_table/Makefile src/network_server/Makefile src/register/Makefile src/servent/Makefile"
 config_headers=" config.h"
 config_commands=" depfiles"
 
@@ -363,7 +363,7 @@ Copyright (C) 2008 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/lmborba/trabP2P'
+ac_pwd='/home/lmborba/trabp2p'
 srcdir='.'
 INSTALL='/usr/bin/ginstall -c'
 MKDIR_P='/usr/bin/mkdir -p'
@@ -472,6 +472,7 @@ do
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/errors/Makefile") CONFIG_FILES="$CONFIG_FILES src/errors/Makefile" ;;
     "src/hash_table/Makefile") CONFIG_FILES="$CONFIG_FILES src/hash_table/Makefile" ;;
+    "src/network_server/Makefile") CONFIG_FILES="$CONFIG_FILES src/network_server/Makefile" ;;
     "src/register/Makefile") CONFIG_FILES="$CONFIG_FILES src/register/Makefile" ;;
     "src/servent/Makefile") CONFIG_FILES="$CONFIG_FILES src/servent/Makefile" ;;
 
@@ -586,7 +587,7 @@ S["CFLAGS"]="-g -O2"
 S["CC"]="gcc"
 S["am__untar"]="${AMTAR} xf -"
 S["am__tar"]="${AMTAR} chof - \"$$tardir\""
-S["AMTAR"]="${SHELL} /home/lmborba/trabP2P/missing --run tar"
+S["AMTAR"]="${SHELL} /home/lmborba/trabp2p/missing --run tar"
 S["am__leading_dot"]="."
 S["SET_MAKE"]=""
 S["AWK"]="gawk"
@@ -594,12 +595,12 @@ S["mkdir_p"]="/usr/bin/mkdir -p"
 S["MKDIR_P"]="/usr/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="strip"
-S["install_sh"]="$(SHELL) /home/lmborba/trabP2P/install-sh"
-S["MAKEINFO"]="${SHELL} /home/lmborba/trabP2P/missing --run makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/lmborba/trabP2P/missing --run autoheader"
-S["AUTOMAKE"]="${SHELL} /home/lmborba/trabP2P/missing --run automake-1.10"
-S["AUTOCONF"]="${SHELL} /home/lmborba/trabP2P/missing --run autoconf"
-S["ACLOCAL"]="${SHELL} /home/lmborba/trabP2P/missing --run aclocal-1.10"
+S["install_sh"]="$(SHELL) /home/lmborba/trabp2p/install-sh"
+S["MAKEINFO"]="${SHELL} /home/lmborba/trabp2p/missing --run makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/lmborba/trabp2p/missing --run autoheader"
+S["AUTOMAKE"]="${SHELL} /home/lmborba/trabp2p/missing --run automake-1.10"
+S["AUTOCONF"]="${SHELL} /home/lmborba/trabp2p/missing --run autoconf"
+S["ACLOCAL"]="${SHELL} /home/lmborba/trabp2p/missing --run aclocal-1.10"
 S["VERSION"]="0.1"
 S["PACKAGE"]="trabp2p"
 S["CYGPATH_W"]="echo"

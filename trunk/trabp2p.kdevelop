@@ -15,22 +15,22 @@
     <projectname>trabP2P</projectname>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description></description>
-    <defaultencoding></defaultencoding>
+    <description/>
+    <defaultencoding/>
   </general>
   <kdevautoproject>
     <general>
-      <activetarget>src/servent/serventP2P</activetarget>
+      <activetarget>src/register/registerP2P</activetarget>
       <useconfiguration>debug</useconfiguration>
     </general>
     <run>
       <mainprogram>src/trabp2p</mainprogram>
       <terminal>true</terminal>
       <runarguments>
-        <registerP2P></registerP2P>
+        <registerP2P/>
       </runarguments>
       <debugarguments>
-        <registerP2P></registerP2P>
+        <registerP2P/>
       </debugarguments>
       <cwd>
         <registerP2P>/home/lmborba/trabP2P/debug/./src/servent</registerP2P>
@@ -119,13 +119,20 @@
     <groups>
       <group pattern="*.h" name="Header files" />
       <group pattern="*.c" name="Source files" />
+      <hidenonprojectfiles>false</hidenonprojectfiles>
+      <hidenonlocation>false</hidenonlocation>
     </groups>
+    <tree>
+      <showvcsfields>false</showvcsfields>
+      <hidenonprojectfiles>false</hidenonprojectfiles>
+      <hidepatterns>*.o,*.lo,CVS</hidepatterns>
+    </tree>
   </kdevfileview>
   <kdevdocumentation>
     <projectdoc>
       <docsystem>Coleções de Documentação do Doxygen</docsystem>
       <docurl>trabp2p.tag</docurl>
-      <usermanualurl></usermanualurl>
+      <usermanualurl/>
     </projectdoc>
   </kdevdocumentation>
   <substmap>
@@ -179,7 +186,7 @@
       <includePaths>.;</includePaths>
     </codecompletion>
     <creategettersetter>
-      <prefixGet></prefixGet>
+      <prefixGet/>
       <prefixSet>set</prefixSet>
       <prefixVariable>m_,_</prefixVariable>
       <parameterName>theValue</parameterName>
@@ -191,6 +198,7 @@
       <synchronize>true</synchronize>
       <orientation>Vertical</orientation>
     </splitheadersource>
+    <references/>
   </kdevcppsupport>
   <cppsupportpart>
     <filetemplates>
@@ -200,11 +208,11 @@
   </cppsupportpart>
   <kdevdebugger>
     <general>
-      <gdbpath></gdbpath>
-      <dbgshell></dbgshell>
-      <configGdbScript></configGdbScript>
-      <runShellScript></runShellScript>
-      <runGdbScript></runGdbScript>
+      <gdbpath/>
+      <dbgshell/>
+      <configGdbScript/>
+      <runShellScript/>
+      <runGdbScript/>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -217,7 +225,7 @@
     </display>
   </kdevdebugger>
   <ctagspart>
-    <customArguments></customArguments>
+    <customArguments/>
     <customTagfilePath>/home/lmborba/trabP2P/tags</customTagfilePath>
     <activeTagsFiles/>
   </ctagspart>
