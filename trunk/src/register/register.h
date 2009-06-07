@@ -24,6 +24,16 @@
 #include <hash_table.h>
 #include <pthread.h>
 
+#define COMMAND_JOIN     1
+#define COMMAND_PUBLISH  2
+#define COMMAND_SEARCH   3
+
+#define INCORRECT_ANSWER 24
+#define CORRECT_ANSWER   16
+
+#define SEARCH_END       0
+#define SEARCH_NOT_END   1
+
 struct all_information {
 
   symbol_t stable;

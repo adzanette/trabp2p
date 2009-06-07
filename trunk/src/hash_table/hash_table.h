@@ -122,7 +122,7 @@ void free_table(symbol_t* table) ;
  * @return uma lista encadeada com todas as entradas que contém 'name' na tabela hash, ou NULL se 'name'
  *         nao se encontrou na tabela.
  */
-linkedlist* lookup(symbol_t table, char* name) ;
+linkedlist* lookup(symbol_t * table, char* name) ;
 
 /** \brief Insere uma entrada em uma tabela.
  *

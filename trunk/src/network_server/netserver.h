@@ -27,7 +27,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define SERVER_PORT 12021
+#define SERVER_PORT 5678
 #define MAX_CONNECTIONS 30
 #define F_MESSAGES stdout
 

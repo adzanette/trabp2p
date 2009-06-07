@@ -187,29 +187,29 @@ int insert(symbol_t * table, entry_t * entry) {
 
 };
 
-linkedlist* lookup(symbol_t table, char* name) {
+linkedlist* lookup(symbol_t * table, char* name) {
 
   int index;
   linkedlist * ll_aux;
   int found = 0;
-	linkedlist * ret;
-	linkedlist * ret_aux;	
-
-	ret = NULL;
+  linkedlist * ret;
+  linkedlist * ret_aux;	
+  
+  ret = NULL;
   index = hashify(name);
   
-  for (ll_aux = (table.ll)[index]; ll_aux != NULL; ll_aux = ll_aux->next) {
+  for (ll_aux = (table->ll)[index]; ll_aux != NULL; ll_aux = ll_aux->next) {
     if (!compare(ll_aux->head->name, name)){
-			if(ret = NULL){      
-				ret = (linkedlist *) malloc(sizeof(linkedlist));
-				ret->head = ll_aux->head;
-				ret->next = NULL;
-			}else{
-				ret_aux = (linkedlist *) malloc(sizeof(linkedlist));
-				ret_aux->head = ll_aux->head;
-				ret_aux->next = ret;
-				ret = ret_aux;
-			}
+      if (ret = NULL) {
+	ret = (linkedlist *) malloc(sizeof(linkedlist));
+	ret->head = ll_aux->head;
+	ret->next = NULL;
+      } else {
+	ret_aux = (linkedlist *) malloc(sizeof(linkedlist));
+	ret_aux->head = ll_aux->head;
+	ret_aux->next = ret;
+	ret = ret_aux;
+      }
     }
   }
 

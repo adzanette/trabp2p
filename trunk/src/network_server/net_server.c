@@ -42,12 +42,13 @@ void * handler(void * data) {
   int operation;
   int string_size;
   int ret_size;
+  int i;
 
   a_data = (struct all_data *) data;
 
   size = read(a_data->socket,buffer,SIZE_OPERATION);
 
-  while (size >= 0) {
+  while (size > 0) {
 
     operation = buffer[0];
 
@@ -82,6 +83,10 @@ void * handler(void * data) {
     };
 
     ret_size = (*(a_data->net_data->callback))(operation,buffer,buffer_out,a_data->ip_address,a_data->net_data->data);
+    
+    for (i=0;i<ret_size;i++) {
+      printf("%d\n",(int) buffer_out[i]);
+    };
 
     if (ret_size < 0) {
       return (void *) -ret_size;
@@ -95,7 +100,7 @@ void * handler(void * data) {
 
   close(a_data->socket);
 
-  return E_OK;
+  pthread_exit(E_OK);
 
 };
 
