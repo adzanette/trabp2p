@@ -44,7 +44,8 @@ struct network {
 
   int socket; /**< O socket propriamente dito */
 
-  int (*callback)(int operation, void * data, void * ret_data,int ip_address); /** Callback a ser chamada quando recebe uma operação a realizar */
+  int (*callback)(int operation, void * data, void * ret_data,int ip_address, void *all_data); 
+  /**< Callback a ser chamada quando recebe uma operação a realizar */
 
   struct sockaddr_in server_address;
 
@@ -52,8 +53,10 @@ struct network {
 
   int end;
 
+  void * data;
+
 };
 
-struct network * init_network_server(int (*callback)(int operation, void * data, void * ret_data, int ip_address));
+struct network * init_network_server(int (*callback)(int operation, void * data, void * ret_data, int ip_address, void * all_data), void * data);
 
 #endif

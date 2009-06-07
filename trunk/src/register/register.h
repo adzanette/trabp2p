@@ -17,3 +17,22 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#ifndef __REGISTER_H
+#define __REGISTER_H
+
+#include <hash_table.h>
+#include <pthread.h>
+
+struct all_information {
+
+  symbol_t stable;
+  
+  linkedlist * servents;
+  
+  pthread_mutex_t servents_mutex;
+  pthread_mutex_t stable_mutex;
+  
+};
+
+#endif

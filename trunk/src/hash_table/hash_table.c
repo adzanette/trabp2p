@@ -155,8 +155,7 @@ int insert(symbol_t * table, entry_t * entry) {
     comp_value = compare((aux->head)->name,entry->name);
 
     if (comp_value == 0) {
-			comp_value =  compare((aux->head)->ip, entry->ip);
-			if (comp_value == 0) return ERRO;
+      if (((aux->head)->ip) == (entry->ip)) return ERRO;
     } else if (comp_value > 0) {
       break;
     };

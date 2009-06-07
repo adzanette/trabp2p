@@ -33,39 +33,62 @@ char * get_string(char * data) {
 
   int size;
 
-  size = *((int *) data_c);
+  size = *((int *) data);
   data[sizeof(int)+size] = 0;
 
   return data+sizeof(int);
 
 };
 
-int handle_operations (int operation, void * data, void * ret_data, int ip_address) {
+int join (int ip_address, char * ret_data, struct all_information * all_data) {
+  
+  linkedlist * ll_aux;
+
+  ll_aux = (linkedlist *) malloc(sizeof(linkedlist));
+  ll_aux->head = (entry_t *) malloc(sizeof(entry_t));
+  ll_aux->head->ip = ip_address;
+  ll_aux->next = all_data->servents;
+  all_data->servents->next = ll_aux;
+  
+  return E_OK;
+
+}
+
+int handle_operations (int operation, void * data, void * ret_data, int ip_address,void * all_data) {
 
   switch (operation) {
 
   case 1: {
-    return join(ip_address,ret_data);
+    return -join(ip_address,(char *) ret_data,(struct all_information *) all_data);
   };
   case 2: {
-    return publish(get_string((char *) data),ret_data);
+    //  return -publish(get_string((char *) data),(char *) ret_data,(struct all_information *) all_data);
   };
   case 3: {
-    return search(get_string((char *) data),ret_data);
+    //return -search(get_string((char *) data),(char *) ret_data,(struct all_information *) all_data);
   };
- 
+
   };
 
   return E_OK;
 
 };
 
+void init_program(struct all_information * all) {
+
+  all_data->servents = NULL;
+  
+};
+
 int main(int argv, char ** argc) {
 
   struct network * net;
+  struct all_information all;
   char c;
 
-  net = init_network_server(handle_operations);
+  init_program(&all);
+
+  net = init_network_server(handle_operations,(void *) &all);
   if (net == NULL) {
     printf("Erro Criando o Socket\n");
     return -1;

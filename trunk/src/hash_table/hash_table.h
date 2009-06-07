@@ -43,7 +43,7 @@ struct dimensoes {
 typedef struct {
   char* name;  /**< um string que representa o nome de uma variavel. */
   clock_t time;    /**< representacao do tempo do último hello. */
-  char* ip;    /**< string que representa o ip. */ 
+  int ip;    /**< string que representa o ip. */ 
 } entry_t ;
 
 

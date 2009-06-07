@@ -81,7 +81,7 @@ void * handler(void * data) {
       
     };
 
-    ret_size = (*(a_data->net_data->callback))(operation,buffer,buffer_out,a_data->ip_address);
+    ret_size = (*(a_data->net_data->callback))(operation,buffer,buffer_out,a_data->ip_address,a_data->net_data->data);
 
     if (ret_size < 0) {
       return (void *) -ret_size;
@@ -187,7 +187,7 @@ int create_socket(struct network * net_data) {
  * \return Estrutura com os dados da rede.
  * \retval NULL Erro
  */
-struct network * init_network_server(int (*callback)(int operation, void * data, void * ret_data, int ip_address)) {
+struct network * init_network_server(int (*callback)(int operation, void * data, void * ret_data, int ip_address, void * all_data), void * data) {
 
   struct network * retorno;
   int creation;
@@ -199,6 +199,7 @@ struct network * init_network_server(int (*callback)(int operation, void * data,
   };
 
   retorno->callback = callback;
+  retorno->data = data;
   retorno->end = 0;
 
   creation = create_socket(retorno);
