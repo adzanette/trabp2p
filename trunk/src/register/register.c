@@ -92,7 +92,7 @@ int delete_delayed(struct all_information * all_data) {
   
   while (ll_aux) {
 
-    printf("%d,%lld,%lld\n",(int) difftime(current,ll_aux->head->time), current,ll_aux->head->time);
+    //    printf("%d,%lld,%lld\n",(int) difftime(current,ll_aux->head->time), current,ll_aux->head->time);
     
     if (difftime(current,ll_aux->head->time) >= 120) {
       
@@ -229,7 +229,7 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
     return 1;
   };
   
-  printf("%s\n",name);
+  //  printf("%s\n",name);
   pthread_mutex_lock(&(all->stable_mutex));
   ret = lookup(&(all->stable), name);
   pthread_mutex_unlock(&(all->stable_mutex));
@@ -251,6 +251,8 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
     };
     
   };
+
+  printf("%d\n",pos);
 
   ret_data[pos-sizeof(int)-1] = SEARCH_END;
 
@@ -319,7 +321,7 @@ void * hello_thread(void * data) {
     }
 
     if (buffer[0] = COMMAND_HELLO) {
-      printf("Hello de %s\n",inet_ntoa(client_address.sin_addr));
+      //      printf("Hello de %s\n",inet_ntoa(client_address.sin_addr));
       refresh_clock((int) client_address.sin_addr.s_addr,all);
     };
 
@@ -372,7 +374,7 @@ int main(int argv, char ** argc) {
 
   net = init_network_server(handle_operations,(void *) &all);
   if (net == NULL) {
-    printf("Erro Criando o Socket\n");
+    //    printf("Erro Criando o Socket\n");
     return -1;
   };
 
