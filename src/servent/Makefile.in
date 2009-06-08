@@ -47,7 +47,8 @@ binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am_serventP2P_OBJECTS = serventMain.$(OBJEXT)
 serventP2P_OBJECTS = $(am_serventP2P_OBJECTS)
-serventP2P_LDADD = $(LDADD)
+serventP2P_DEPENDENCIES =  \
+	$(top_builddir)/src/hash_table/libhash_table.a
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -144,10 +145,11 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-INCLUDES = -I$(top_srcdir)/src/errors $(all_includes)
+INCLUDES = -I$(top_srcdir)/src/errors -I$(top_srcdir)/src/hash_table $(all_includes)
 METASOURCES = AUTO
 serventP2P_SOURCES = serventMain.c
 noinst_HEADERS = servent.h
+serventP2P_LDADD = $(top_builddir)/src/hash_table/libhash_table.a -lpthread
 all: all-am
 
 .SUFFIXES:
