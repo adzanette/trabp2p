@@ -27,6 +27,9 @@
 #define COMMAND_JOIN     1
 #define COMMAND_PUBLISH  2
 #define COMMAND_SEARCH   3
+#define COMMAND_HELLO    5
+
+#define COMMAND_HELLO_SIZE 1
 
 #define INCORRECT_ANSWER 24
 #define CORRECT_ANSWER   16
@@ -44,6 +47,11 @@ struct all_information {
   
   pthread_mutex_t servents_mutex;
   pthread_mutex_t stable_mutex;
+
+  pthread_t hello_t;
+  pthread_t disjoin_t;
+
+  int sock;
   
 };
 

@@ -1,3 +1,3 @@
 INCLUDES = $(all_includes)
 METASOURCES = AUTO
-errors_includes_SOURCES = errors.h
+noinst_HEADERS = errors.h

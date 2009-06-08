@@ -120,7 +120,7 @@ void * main_function(void * data) {
 
   struct sockaddr_in client_address;
 
-  pthread_t new;  
+  pthread_t * new;  
   
   struct all_data * a_data;
   
@@ -137,9 +137,9 @@ void * main_function(void * data) {
       exit(E_ERROR_ACCEPTING_CONNECTION);
     };
 
-    //#ifdef DEBUG
+#ifdef DEBUG
     fprintf(F_MESSAGES, "Cliente conectado no IP: %s\n",inet_ntoa(client_address.sin_addr));
-    //#endif
+#endif
 
     a_data = (struct all_data *) malloc(sizeof(struct all_data));
 
@@ -147,7 +147,9 @@ void * main_function(void * data) {
     a_data->ip_address = client_address.sin_addr.s_addr;
     a_data->net_data = net_data;
 
-    pthread_create(&new,NULL,handler,(void *) a_data);
+    new = (pthread_t *) malloc(sizeof(pthread_t));
+
+    pthread_create(new,NULL,handler,(void *) a_data);
     
   }
 
