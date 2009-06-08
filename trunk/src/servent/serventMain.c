@@ -419,7 +419,21 @@ void * hello(void* ip_void){
   }
 }
 
+void publish_all(DIR* path){
+	struct dirent *dir;
+	DIR* path_aux;
 
+	while(dir = readdir(path)){
+		if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, "..")){
+			if (!(path_aux = opendir(dir->d_name))){ 
+				publish(dir->d_name); 
+	  	}else{
+				publish_all(path_aux);
+			}
+		}  
+  }
+	close(path);
+}
 
 int main(int argc, char** argv){
 	
@@ -429,7 +443,7 @@ int main(int argc, char** argv){
   char file[BUFFSIZE];
   int id;
   t_list* thread_aux;
-  int test_folder;  
+   DIR *path;
 
   /** \todo Apagar seguintes comandos */
   argca = argc;
@@ -440,12 +454,14 @@ int main(int argc, char** argv){
   init_table(&seeds);
 	
   id = 0;
-/*
-  test_folder = mkdir("SharedP2P", 744);
-  if (test_folder == EEXIST){
-	//PUBLISH ALL
-  }
-*/	
+
+	if (!(path = opendir("SharedP2P"))){ 
+		mkdir("SharedP2P", 744);
+	}else{
+		publish_all(path);
+	}
+  closedir (path);
+
   sock_tcp = create_socket(inet_addr(argv[1]), PORT_TCP, TCP);	
 
   if ((sock_udp = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
@@ -467,7 +483,6 @@ int main(int argc, char** argv){
   do{	
     scanf("%s", op);
     if (!strcmp(op, "join")){
-      //      scanf("%s", &ip);
       join();
     }else if (!strcmp(op, "publish")){
       scanf("%s", file);
