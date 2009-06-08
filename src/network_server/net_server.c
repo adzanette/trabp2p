@@ -84,9 +84,9 @@ void * handler(void * data) {
 
     ret_size = (*(a_data->net_data->callback))(operation,buffer,buffer_out,a_data->ip_address,a_data->net_data->data);
     
-    for (i=0;i<ret_size;i++) {
-      printf("%d\n",(int) buffer_out[i]);
-    };
+    //    for (i=0;i<ret_size;i++) {
+    //printf("%d\n",(int) buffer_out[i]);
+    //};
 
     if (ret_size < 0) {
       return (void *) -ret_size;
