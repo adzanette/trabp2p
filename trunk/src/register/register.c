@@ -91,6 +91,8 @@ int delete_delayed(struct all_information * all_data) {
   ll_aux = all_data->servents;
   
   while (ll_aux) {
+
+    printf("%d\n",((current-(ll_aux->head->time))/CLOCKS_PER_SEC));
     
     if (((current-(ll_aux->head->time))/CLOCKS_PER_SEC) >= 120) {
       
@@ -355,7 +357,7 @@ void init_program(struct all_information * all) {
   }
 
   pthread_create(&(all->hello_t),NULL,hello_thread,(void *) all);
-  //  pthread_create(&(all->disjoin_t),NULL,disjon_thread,(void *) all);
+  pthread_create(&(all->disjoin_t),NULL,disjoin,(void *) all);
 
 };
 
