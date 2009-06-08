@@ -92,7 +92,7 @@ int delete_delayed(struct all_information * all_data) {
   
   while (ll_aux) {
 
-    printf("%d,%d,%d\n",difftime(current,ll_aux->head->time),current,ll_aux->head->time);
+    printf("%lld,%lld,%lld\n",(int) difftime(current,ll_aux->head->time), current,ll_aux->head->time);
     
     if (difftime(current,ll_aux->head->time) >= 120) {
       
