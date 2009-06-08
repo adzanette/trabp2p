@@ -23,6 +23,20 @@
 #include <netserver.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <pthread.h>
+
+struct dat {
+
+  int ip;
+
+  struct all_information * all;
+
+};
 
 void evaluate_commands(char c) {
 
@@ -44,6 +58,8 @@ char * get_string(char * data) {
 int connected(int ip_address, struct all_information * all_data) {
 
   linkedlist * ll_aux;
+
+  pthread_mutex_lock(&(all_data->servents_mutex));
   
   for (ll_aux=all_data->servents;ll_aux;ll_aux=ll_aux->next) {
 
@@ -52,6 +68,8 @@ int connected(int ip_address, struct all_information * all_data) {
     };
 
   };
+
+  pthread_mutex_unlock(&(all_data->servents_mutex));
 
   return 0;
 
@@ -151,7 +169,7 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
       memcpy(ret_data+pos,(char *) &(aux->head->ip),sizeof(int));
       pos += sizeof(int);
     };
-
+    
   };
 
   ret_data[pos-sizeof(int)-1] = SEARCH_END;
@@ -174,19 +192,48 @@ int handle_operations (int operation, void * data, void * ret_data, int ip_addre
     return search(get_string((char *) data),ip_address,(char *) ret_data,(struct all_information *) all_data);
   };
 
+  default: {
+    return -1;
+  };
+
   };
 
 };
 
+void * hello_thread(void * data) {
+};
+
 void init_program(struct all_information * all) {
+
+  int sock;
+  struct sockaddr_in echoserver;
+  unsigned int serverlen;
+  int received = 0;
 
   all->servents = NULL;
   
   init_table(&(all->stable));
 
   pthread_mutex_init(&(all->servents_mutex),NULL);
-  pthread_mutex_init(&(all->stable_mutex),NULL);
+  pthread_mutex_init(&(all->stable_mutex),NULL); 
+
+  if ((sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
+    exit(-1);
+  }
+
+  memset(&echoserver, 0, sizeof(echoserver));
+  echoserver.sin_family = AF_INET;         
+  echoserver.sin_addr.s_addr = htonl(INADDR_ANY);
+  echoserver.sin_port = htons(HELLO_PORT);       
+
+  /* Bind the socket */
+  serverlen = sizeof(echoserver);
+  if (bind(sock, (struct sockaddr *) &echoserver, serverlen) < 0) {
+    exit(-1);
+  }
+
   
+
 };
 
 int main(int argv, char ** argc) {
