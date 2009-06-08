@@ -75,9 +75,81 @@ int connected(int ip_address, struct all_information * all_data) {
 
 };
 
+int delete_delayed(struct all_information * all_data) {
+
+  linkedlist * ll_aux;
+  linkedlist * ll_ant;
+  linkedlist * ll_todel;
+  clock_t current;
+
+  current = clock();
+
+  pthread_mutex_lock(&(all_data->servents_mutex));
+
+  ll_ant = NULL;
+  ll_aux = all_data->servents;
+  
+  while (ll_aux) {
+    
+    if (((current-(ll_aux->head->time))/CLOCKS_PER_SEC) >= 120) {
+      
+      if (ll_ant == NULL) {
+	all_data->servents = ll_aux->next;
+      } else {
+	ll_ant->next = ll_aux->next;
+      };
+
+      ll_todel = ll_aux;
+      ll_aux = ll_aux->next;
+
+      ll_todel->next = NULL;
+
+      free_linkedlist(ll_todel);
+
+    } else {
+      
+      ll_ant = ll_aux;
+      ll_aux = ll_aux->next;
+      
+    };
+    
+  };
+
+  pthread_mutex_unlock(&(all_data->servents_mutex));
+
+  return 0;
+
+};
+
+int refresh_clock(int ip_address, struct all_information * all_data) {
+
+  linkedlist * ll_aux;
+
+  pthread_mutex_lock(&(all_data->servents_mutex));
+  
+  for (ll_aux=all_data->servents;ll_aux;ll_aux=ll_aux->next) {
+
+    if (ll_aux->head->ip == ip_address) {
+      ll_aux->head->time = clock();
+      return 1;
+    };
+
+  };
+
+  pthread_mutex_unlock(&(all_data->servents_mutex));
+
+  return 0;
+
+};
+
 int join (int ip_address, char * ret_data, struct all_information * all_data) {
   
   linkedlist * ll_aux;
+
+  if (connected(ip_address,all_data)) {
+    ret_data[0] = CORRECT_ANSWER + COMMAND_JOIN;
+    return 1;
+  };
 
   ll_aux = (linkedlist *) malloc(sizeof(linkedlist));
   if (!ll_aux) {
@@ -200,12 +272,56 @@ int handle_operations (int operation, void * data, void * ret_data, int ip_addre
 
 };
 
+void * disjoin(void * data) {
+
+  struct all_information * all;
+  linkedlist * aux;
+
+  all = (struct all_information *) data;
+
+  while (1) {
+
+    delete_delayed(all);
+
+    sleep(2);
+	 
+  };
+
+  return;
+
+};
+
 void * hello_thread(void * data) {
+
+  struct all_information * all;
+  struct sockaddr_in client_address;
+  int client_address_size;
+  int received;
+  char buffer[10];
+
+  all = (struct all_information *) data;
+
+  while (1) {
+    /* Receive a message from the client */
+    client_address_size = sizeof(client_address);
+    if ((received = recvfrom(all->sock, buffer, COMMAND_HELLO_SIZE, 0,
+			     (struct sockaddr *) &client_address,
+			     &client_address_size)) < 0) {
+      exit(-1);
+    }
+
+    if (buffer[0] = COMMAND_HELLO) {
+      refresh_clock((int) client_address.sin_addr.s_addr,all);
+    };
+
+  };
+
+  pthread_exit((void *) E_OK);
+
 };
 
 void init_program(struct all_information * all) {
 
-  int sock;
   struct sockaddr_in echoserver;
   unsigned int serverlen;
   int received = 0;
@@ -217,7 +333,7 @@ void init_program(struct all_information * all) {
   pthread_mutex_init(&(all->servents_mutex),NULL);
   pthread_mutex_init(&(all->stable_mutex),NULL); 
 
-  if ((sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
+  if ((all->sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
     exit(-1);
   }
 
@@ -228,11 +344,12 @@ void init_program(struct all_information * all) {
 
   /* Bind the socket */
   serverlen = sizeof(echoserver);
-  if (bind(sock, (struct sockaddr *) &echoserver, serverlen) < 0) {
+  if (bind(all->sock, (struct sockaddr *) &echoserver, serverlen) < 0) {
     exit(-1);
   }
 
-  
+  pthread_create(&(all->hello_t),NULL,hello_thread,(void *) all);
+  //  pthread_create(&(all->disjoin_t),NULL,disjon_thread,(void *) all);
 
 };
 

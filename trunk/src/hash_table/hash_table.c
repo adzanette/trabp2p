@@ -94,6 +94,7 @@ void free_linkedlist(linkedlist* ll) {
   while(next != NULL){
 
     ll = ll->next;
+    free(next->head);
     free(next);
     next = ll;
 
