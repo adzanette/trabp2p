@@ -91,7 +91,7 @@ void * handler(void * data) {
     if (ret_size < 0) {
       return (void *) -ret_size;
     } else if (ret_size > 0) {
-      write(a_data->socket,buffer,ret_size);
+      write(a_data->socket,buffer_out,ret_size);
     };
 
     size = read(a_data->socket,buffer,SIZE_OPERATION);

@@ -28,6 +28,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include <errno.h>
 #include "../hash_table/hash_table.h"
 
 #define MAXPENDING	5
@@ -36,7 +37,9 @@
 
 #define PORT_TCP	5678
 #define PORT_UDP	5679
-#define PORT_FETCH	5680
+#define PORT_FETCH      5680
+#define PORT_FETCH_IN   (atoi(argva[2]))
+#define PORT_FETCH_OUT  (atoi(argva[3]))
 
 #define COMMAND_JOIN	1
 #define COMMAND_PUBLISH	2
