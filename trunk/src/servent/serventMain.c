@@ -165,7 +165,7 @@ void search(char* file){
 
       ip = * ((int *) buffer);
       printf("Seed %d: ", i);
-      printf("%d.%d.%d.%d\n", (int) buffer[0],(int) buffer[1],(int) buffer[2],(int) buffer[3]);
+      printf("%d.%d.%d.%d\n", (unsigned int) buffer[0],(unsigned int) buffer[1],(unsigned int) buffer[2],(unsigned int) buffer[3]);
       i++;
 
       aux = (entry_t *) malloc(sizeof(entry_t));
@@ -420,19 +420,19 @@ void * hello(void* ip_void){
 }
 
 void publish_all(DIR* path){
-	struct dirent *dir;
-	DIR* path_aux;
-
-	while(dir = readdir(path)){
-		if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, "..")){
-			if (!(path_aux = opendir(dir->d_name))){ 
-				publish(dir->d_name); 
-	  	}else{
-				publish_all(path_aux);
-			}
-		}  
+  struct dirent *dir;
+  DIR* path_aux;
+  
+  while(dir = readdir(path)){
+    if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, "..")){
+      if (!(path_aux = opendir(dir->d_name))){ 
+	publish(dir->d_name); 
+      }else{
+	publish_all(path_aux);
+      }
+    }  
   }
-	close(path);
+  //  closedir(path);
 }
 
 int main(int argc, char** argv){
@@ -455,11 +455,11 @@ int main(int argc, char** argv){
 	
   id = 0;
 
-	if (!(path = opendir("SharedP2P"))){ 
-		mkdir("SharedP2P", 744);
-	}else{
-		publish_all(path);
-	}
+  if (!(path = opendir("SharedP2P"))){ 
+    mkdir("SharedP2P", 744);
+  }else{
+    publish_all(path);
+  }
   closedir (path);
 
   sock_tcp = create_socket(inet_addr(argv[1]), PORT_TCP, TCP);	
