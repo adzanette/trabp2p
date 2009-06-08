@@ -81,9 +81,9 @@ int delete_delayed(struct all_information * all_data) {
   linkedlist * ll_aux;
   linkedlist * ll_ant;
   linkedlist * ll_todel;
-  clock_t current;
+  time_t current;
 
-  current = clock();
+  time(&current);
 
   pthread_mutex_lock(&(all_data->servents_mutex));
 
@@ -92,9 +92,9 @@ int delete_delayed(struct all_information * all_data) {
   
   while (ll_aux) {
 
-    printf("%d\n",((current-(ll_aux->head->time))/CLOCKS_PER_SEC));
+    printf("%d\n",difftime(current,ll_aux->head->time));
     
-    if (((current-(ll_aux->head->time))/CLOCKS_PER_SEC) >= 120) {
+    if (difftime(current,ll_aux->head->time) >= 120) {
       
       if (ll_ant == NULL) {
 	all_data->servents = ll_aux->next;
@@ -133,7 +133,7 @@ int refresh_clock(int ip_address, struct all_information * all_data) {
   for (ll_aux=all_data->servents;ll_aux;ll_aux=ll_aux->next) {
 
     if (ll_aux->head->ip == ip_address) {
-      ll_aux->head->time = clock();
+      time(&(ll_aux->head->time));
       pthread_mutex_unlock(&(all_data->servents_mutex));
       return 1;
     };
