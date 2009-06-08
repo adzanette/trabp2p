@@ -136,6 +136,7 @@ void search(char* file){
   int pos;
   int bool;
   entry_t* aux;
+  int size;
 
   filename_len = strlen(file);
 
@@ -158,9 +159,9 @@ void search(char* file){
     if( buffer[0] == COMMAND_SEARCH + CORRECT_ANSWER ){
 
       bool = buffer[1];
-
+     
+      
       recv(sock_tcp, buffer, SIZE_INT, 0);
-      buffer[bytes] = '\0';
 
       ip = * ((int *) buffer);
       printf("Seed %d: ", i);

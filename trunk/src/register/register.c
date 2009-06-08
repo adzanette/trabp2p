@@ -314,13 +314,14 @@ void * hello_thread(void * data) {
   while (1) {
     /* Receive a message from the client */
     client_address_size = sizeof(client_address);
-    if ((received = recvfrom(all->sock, buffer, COMMAND_HELLO_SIZE, 0,
+    received = recvfrom(all->sock, buffer, COMMAND_HELLO_SIZE, 0,
 			     (struct sockaddr *) &client_address,
-			     &client_address_size)) < 0) {
+			&client_address_size);
+    if (received < 0) {
       exit(-1);
     }
 
-    if (buffer[0] = COMMAND_HELLO) {
+    if (buffer[0] == COMMAND_HELLO) {
       //      printf("Hello de %s\n",inet_ntoa(client_address.sin_addr));
       refresh_clock((int) client_address.sin_addr.s_addr,all);
     };
