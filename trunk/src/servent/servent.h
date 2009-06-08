@@ -29,6 +29,7 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include <errno.h>
+#include <dirent.h>
 #include "../hash_table/hash_table.h"
 
 #define MAXPENDING	5

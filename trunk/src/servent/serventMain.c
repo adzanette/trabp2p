@@ -443,7 +443,7 @@ int main(int argc, char** argv){
   char file[BUFFSIZE];
   int id;
   t_list* thread_aux;
-   DIR *path;
+  DIR *path;
 
   /** \todo Apagar seguintes comandos */
   argca = argc;
