@@ -227,7 +227,7 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
     return 1;
   };
   
-  printf("%s\n",name);
+  //  printf("%s\n",name);
   pthread_mutex_lock(&(all->stable_mutex));
   ret = lookup(&(all->stable), name);
   pthread_mutex_unlock(&(all->stable_mutex));
@@ -241,7 +241,7 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
 
   for (aux=ret;aux;aux=aux->next) {
 
-    printf("%d\n",aux->head->ip);
+    //    printf("%d\n",aux->head->ip);
 
     if (connected(aux->head->ip,all)) {
       ret_data[pos++] = CORRECT_ANSWER + COMMAND_SEARCH;
@@ -252,7 +252,7 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
     
   };
 
-  printf("%d\n",pos);
+  //  printf("%d\n",pos);
 
   ret_data[pos-sizeof(int)-1] = SEARCH_END;
 
