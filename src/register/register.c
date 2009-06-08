@@ -64,6 +64,7 @@ int connected(int ip_address, struct all_information * all_data) {
   for (ll_aux=all_data->servents;ll_aux;ll_aux=ll_aux->next) {
 
     if (ll_aux->head->ip == ip_address) {
+      pthread_mutex_unlock(&(all_data->servents_mutex));
       return 1;
     };
 
@@ -131,6 +132,7 @@ int refresh_clock(int ip_address, struct all_information * all_data) {
 
     if (ll_aux->head->ip == ip_address) {
       ll_aux->head->time = clock();
+      pthread_mutex_unlock(&(all_data->servents_mutex));
       return 1;
     };
 
@@ -224,7 +226,10 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
     return 1;
   };
   
+  printf("%s\n",name);
+  pthread_mutex_lock(&(all->stable_mutex));
   ret = lookup(&(all->stable), name);
+  pthread_mutex_unlock(&(all->stable_mutex));
 
   if (!ret) {
     ret_data[0] = INCORRECT_ANSWER + COMMAND_SEARCH;
@@ -311,6 +316,7 @@ void * hello_thread(void * data) {
     }
 
     if (buffer[0] = COMMAND_HELLO) {
+      printf("Hello de %s\n",inet_ntoa(client_address.sin_addr));
       refresh_clock((int) client_address.sin_addr.s_addr,all);
     };
 

@@ -34,6 +34,10 @@ symbol_t seeds;
 
 t_list* threads;
 
+/** \todo Apagar variáveis de teste */
+int argca;
+char ** argva;
+
 void Die(char *mess) { perror(mess); exit(1); }
 
 int create_socket(int ip, int port, int protocol){
@@ -141,7 +145,7 @@ void search(char* file){
   pos += sizeof(int);
   memcpy(echo+pos, file, filename_len);
   pos += filename_len;
-	
+
   if (send(sock_tcp, echo, pos, 0) != pos) {
     Die("Mismatch in number of sent bytes!\n");
   }
@@ -160,7 +164,7 @@ void search(char* file){
 
       ip = * ((int *) buffer);
       printf("Seed %d: ", i);
-      printf("%d\n", ip);
+      printf("%d.%d.%d.%d\n", (int) buffer[0],(int) buffer[1],(int) buffer[2],(int) buffer[3]);
       i++;
 
       aux = (entry_t *) malloc(sizeof(entry_t));
@@ -170,6 +174,9 @@ void search(char* file){
       insert(&seeds, aux);
 
       if(bool == SEARCH_END) break;
+    } else if ( buffer[0] == (COMMAND_SEARCH + INCORRECT_ANSWER) ){
+	printf("No seeds for you!\n");
+	break;
     }
   }
 }
@@ -198,7 +205,7 @@ void * fetch(void* file_void){
 
   while(1){
 		
-    sock = create_socket(ll_seeds->head->ip, PORT_FETCH, TCP);
+    sock = create_socket(ll_seeds->head->ip, PORT_FETCH_IN, TCP);
 
     if (!sock) {
 
@@ -255,7 +262,10 @@ void * fetch(void* file_void){
     }
   }
   fclose(out);
+
   printf("File %s downloaded!\n", file);
+
+  publish(file);
 }
 
 
@@ -354,7 +364,7 @@ void * reply_fetch(){
   memset(&echoserver, 0, sizeof(echoserver));       
   echoserver.sin_family = AF_INET;                  
   echoserver.sin_addr.s_addr = htonl(INADDR_ANY);   
-  echoserver.sin_port = htons(PORT_FETCH);       
+  echoserver.sin_port = htons(PORT_FETCH_OUT);       
 
   if (bind(serversock, (struct sockaddr *) &echoserver,sizeof(echoserver)) < 0) {
     Die("Failed to bind the server socket");
@@ -380,22 +390,27 @@ void * reply_fetch(){
 
 void * hello(void* ip_void){
 
-  clock_t current, last;
-  current = clock();
+  //  clock_t current, last;
+  time_t current,last;
   int pos;
   char echo[BUFFSIZE];
   char* ip;
 
+  time(&current);
+
   ip = (char *)ip_void;
 
   for(;;){
-    last = clock();
-    if(difftime(last, current) > 60){
+    time(&last);
+    //printf("%d,%d,%d\n",last-current,last,current);
+    if(difftime(last,current) > 10){
       pos = 0;
       echo[pos++] = COMMAND_HELLO;
 			
       if (sendto(sock_udp, echo, pos, 0,(struct sockaddr *) &echoserver_udp,sizeof(echoserver_udp)) != 1) {
 	Die("Mismatch in number of sent bytes!\n");
+      }else{
+	printf("HELLO sent!\n");
       }
       current = last;
     }
@@ -407,19 +422,29 @@ void * hello(void* ip_void){
 
 int main(int argc, char** argv){
 	
-  char* op;
-  char* name;
-  char* ip;
-  char* file;
+  char op[BUFFSIZE];
+  char name[BUFFSIZE];
+  char ip[BUFFSIZE];
+  char file[BUFFSIZE];
   int id;
   t_list* thread_aux;
+  int test_folder;  
+
+  /** \todo Apagar seguintes comandos */
+  argca = argc;
+  argva = argv;
 
   threads = NULL;
 
   init_table(&seeds);
 	
   id = 0;
-	
+/*
+  test_folder = mkdir("SharedP2P", 744);
+  if (test_folder == EEXIST){
+	//PUBLISH ALL
+  }
+*/	
   sock_tcp = create_socket(inet_addr(argv[1]), PORT_TCP, TCP);	
 
   if ((sock_udp = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
@@ -439,18 +464,18 @@ int main(int argc, char** argv){
   pthread_create(&thread_send_fetch,&atributes,reply_fetch, NULL); // envia arquivos requisitados por outros peers
 
   do{	
-    scanf("%s", &op);
+    scanf("%s", op);
     if (!strcmp(op, "join")){
-      scanf("%s", &ip);
+      //      scanf("%s", &ip);
       join();
     }else if (!strcmp(op, "publish")){
-      scanf("%s", &file);
+      scanf("%s", file);
       publish(file);
     }else if (!strcmp(op, "search")){
-      scanf("%s", &search);
+      scanf("%s", file);
       search(file);
     }else if (!strcmp(op, "fetch")){
-      scanf("%s", &file);
+      scanf("%s", file);
       thread_aux = (t_list *) malloc(sizeof(t_list));
       thread_aux->head.id = id;
       id++;
@@ -465,7 +490,7 @@ int main(int argc, char** argv){
     }else if (strcmp(op, "exit")){
       printf("Invalid Command!\n");
     }
-  }while(!strcmp(op, "exit"));
+  } while (strcmp(op, "exit"));
 
   close(sock_tcp);
   close(sock_udp);
