@@ -34,6 +34,8 @@
 #define SEARCH_END       0
 #define SEARCH_NOT_END   1
 
+#define HELLO_PORT       5679
+
 struct all_information {
 
   symbol_t stable;
