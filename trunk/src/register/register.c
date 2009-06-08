@@ -169,6 +169,7 @@ int join (int ip_address, char * ret_data, struct all_information * all_data) {
   };
 
   ll_aux->head->ip = ip_address;
+  time(&(ll_aux->head->time));
 
   pthread_mutex_lock(&(all_data->servents_mutex));
 
