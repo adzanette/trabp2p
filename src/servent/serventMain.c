@@ -464,6 +464,8 @@ int main(int argc, char** argv){
 
   sock_tcp = create_socket(inet_addr(argv[1]), PORT_TCP, TCP);	
 
+	join();
+
   if ((sock_udp = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
     Die("Failed to create socket UDP!\n");
   }
@@ -482,9 +484,7 @@ int main(int argc, char** argv){
 
   do{	
     scanf("%s", op);
-    if (!strcmp(op, "join")){
-      join();
-    }else if (!strcmp(op, "publish")){
+    if (!strcmp(op, "publish")){
       scanf("%s", file);
       publish(file);
     }else if (!strcmp(op, "search")){
@@ -497,11 +497,11 @@ int main(int argc, char** argv){
       id++;
       pthread_create(&(thread_aux->head.thread), &atributes, fetch, (void *)file);
       if (threads == NULL){
-	threads = thread_aux;
-	threads->next = NULL;
+				threads = thread_aux;
+				threads->next = NULL;
       }else{
-	thread_aux->next = threads;
-	threads = thread_aux;
+				thread_aux->next = threads;
+				threads = thread_aux;
       }
     }else if (strcmp(op, "exit")){
       printf("Invalid Command!\n");
