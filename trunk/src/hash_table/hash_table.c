@@ -200,7 +200,7 @@ linkedlist* lookup(symbol_t * table, char* name) {
   
   for (ll_aux = (table->ll)[index]; ll_aux != NULL; ll_aux = ll_aux->next) {
     if (!compare(ll_aux->head->name, name)){
-      if (ret = NULL) {
+      if (ret == NULL) {
 	ret = (linkedlist *) malloc(sizeof(linkedlist));
 	ret->head = ll_aux->head;
 	ret->next = NULL;
