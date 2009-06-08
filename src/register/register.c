@@ -92,21 +92,19 @@ int delete_delayed(struct all_information * all_data) {
   
   while (ll_aux) {
 
-    //    printf("%d,%lld,%lld\n",(int) difftime(current,ll_aux->head->time), current,ll_aux->head->time);
-    
-    if (difftime(current,ll_aux->head->time) >= 120) {
+    if (((int) difftime(current,ll_aux->head->time)) >= 120) {
       
       if (ll_ant == NULL) {
 	all_data->servents = ll_aux->next;
       } else {
 	ll_ant->next = ll_aux->next;
       };
-
+      
       ll_todel = ll_aux;
       ll_aux = ll_aux->next;
-
+      
       ll_todel->next = NULL;
-
+      
       free_linkedlist(ll_todel);
 
     } else {
@@ -117,11 +115,11 @@ int delete_delayed(struct all_information * all_data) {
     };
     
   };
-
+  
   pthread_mutex_unlock(&(all_data->servents_mutex));
-
+  
   return 0;
-
+  
 };
 
 int refresh_clock(int ip_address, struct all_information * all_data) {
@@ -229,7 +227,7 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
     return 1;
   };
   
-  //  printf("%s\n",name);
+  printf("%s\n",name);
   pthread_mutex_lock(&(all->stable_mutex));
   ret = lookup(&(all->stable), name);
   pthread_mutex_unlock(&(all->stable_mutex));
@@ -242,6 +240,8 @@ int search(char * name, int ip, char * ret_data, struct all_information * all){
   pos = 0;
 
   for (aux=ret;aux;aux=aux->next) {
+
+    printf("%d\n",aux->head->ip);
 
     if (connected(aux->head->ip,all)) {
       ret_data[pos++] = CORRECT_ANSWER + COMMAND_SEARCH;
