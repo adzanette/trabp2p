@@ -456,7 +456,7 @@ int main(int argc, char** argv){
   id = 0;
 
   if (!(path = opendir("SharedP2P"))){ 
-    mkdir("SharedP2P", 744);
+    mkdir("SharedP2P", 0744);
   }else{
     publish_all(path);
   }
