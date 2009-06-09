@@ -455,16 +455,16 @@ int main(int argc, char** argv){
 	
   id = 0;
 
+  sock_tcp = create_socket(inet_addr(argv[1]), PORT_TCP, TCP);	
+
+  join();
+
   if (!(path = opendir("SharedP2P"))){ 
     mkdir("SharedP2P", 0744);
   }else{
     publish_all(path);
   }
   closedir (path);
-
-  sock_tcp = create_socket(inet_addr(argv[1]), PORT_TCP, TCP);	
-
-	join();
 
   if ((sock_udp = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
     Die("Failed to create socket UDP!\n");
