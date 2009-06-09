@@ -196,9 +196,12 @@ void * fetch(void* file_void){
   int filename_len;
   int file_size;
   char file_content[SIZE_SEND];	
-  char* file;
+  char * file;
+  char file_complete[256];
 
   file = (char *) file_void;
+  strcpy(file_complete,"SharedP2P/");
+  strcat(file_complete,file);
 
   ll_seeds = lookup(&seeds, file);
 
@@ -241,7 +244,7 @@ void * fetch(void* file_void){
 	
   printf("Downloading %s.\n", file);
 
-  out = fopen(file, "w");
+  out = fopen(file_complete, "w");
   while(1){
     recv(sock, buffer, SIZE_OPERATION + SIZE_BOOLEAN, 0);
 		
@@ -267,6 +270,7 @@ void * fetch(void* file_void){
   printf("File %s downloaded!\n", file);
 
   publish(file);
+  
 }
 
 
@@ -285,6 +289,7 @@ void * send_file(void * socket){
   int pos;
   char send_bytes[SIZE_SEND];
   int bytes;
+  char file_complete[256];
 
   sock = (int)socket;
 
@@ -298,8 +303,10 @@ void * send_file(void * socket){
     buffer[received] = '\0';
     file = (char *) malloc((filename_size+1)*sizeof(char));
     strcpy(file, buffer);
+    strcpy(file_complete,"SharedP2P/");
+    strcat(file_complete,file);
 
-    file_send = fopen(file, "r");
+    file_send = fopen(file_complete, "r");
 
     if (file_send == NULL){
 
